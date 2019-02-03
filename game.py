@@ -1,4 +1,5 @@
 import Person
+import Magic
 
 def calculate_damage(attacker,receiver):
     damage_given = attacker.generate_dmg()
@@ -18,6 +19,16 @@ def playerTurn():
     if action == "Attack":
         print("Attacking the enemy!")
         calculate_damage(player,enemy)
+    elif action == "Magic":
+        player.choose_magic()
+        magic_number = int(input(">>>"))
+        if 1 <= magic_number and magic_number <= len(player.magics):
+            magic = player.magics[magic_number-1]
+            magic_damage = magic.generate_magic_dmg()
+            leftover_mp = player.reduce_mp(magic.mp_cost)
+            enemy.take_dmg(magic_damage)
+            print(f"{player.name} gave {magic_damage} Pts of damage to {enemy.name}! ")
+            print(f"{player.name} used {magic.name} magic: {leftover_mp} MP is left.")
 
 #Enemy attack
 def enemyTurn():
@@ -38,9 +49,13 @@ def checkForWinner():
         print("\tVictory! The Evil has been defeated!")
         return True
 
-
-player = Person.Person("Good Ash",100,200,20)
-enemy = Person.Person("EvilDead",100,200,20)
+thunder_magic = Magic.Magic("thunder",12,32,"Light")
+ice_magic = Magic.Magic("ice",8,28,"Dark")
+wind_magic = Magic.Magic("wind",10,25,"Light")
+fire_magic = Magic.Magic("fire",10,30,"Dark")
+magics = [thunder_magic,ice_magic,wind_magic,fire_magic]
+player = Person.Person("Good Ash",100,200,20,magics)
+enemy = Person.Person("EvilDead",100,200,20,magics)
 
 # INTRODUCTION TO GAME:
 

@@ -1,7 +1,7 @@
 import random
 
 class Person():
-    def __init__ (self,name,hp=200,mp=200,attack=20):
+    def __init__ (self,name,hp=200,mp=200,attack=20,magics):
         self.name = name
         self.hp = hp
         self.max_hp = hp
@@ -11,6 +11,7 @@ class Person():
         self.actions = ["Attack","Magic","Heal"]
         self.atk_high = attack + 10
         self.atk_low = attack - 10
+        self.magics = magics
 
     def get_stat(self):
         print(f"{self.name}:\t{self.hp}/{self.max_hp} HP \n\t\t{self.mp}/{self.max_mp} MP")
@@ -28,5 +29,15 @@ class Person():
         #actions can be (1)Physical attack, (2)Magic or (3)Self Healing
         action = 1
         for element in self.actions:
+            print(f"{action}. {element}")
+            action = action + 1
+
+    def reduce_mp(self,used_mp):
+        self.mp = self.mp - used_mp
+        return self.mp
+
+    def choose_magic(self):
+        action = 1
+        for element in self.magics:
             print(f"{action}. {element}")
             action = action + 1
