@@ -1,3 +1,5 @@
+import random
+
 class Person():
     def __init__ (self,name,hp=200,mp=200,attack=20):
         self.name = name
@@ -18,8 +20,9 @@ class Person():
         return damage_result
 
     def take_dmg(self, taken_damage):
-        hp_left = self.hp - taken_damage
-        return hp_left
+        self.hp = self.hp - taken_damage
+        if self.hp < 0:
+            self.hp = 0
 
     def choose_action(self):
         #actions can be (1)Physical attack, (2)Magic or (3)Self Healing

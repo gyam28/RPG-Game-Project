@@ -1,5 +1,5 @@
 class Magic():
-    def __init__ (self,name, mp_cost, dmg=20, type):
+    def __init__(self,name, mp_cost, dmg=20,type):
         self.name = name
         self.mp_cost = mp_cost
         self.dmg = dmg
