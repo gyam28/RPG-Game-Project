@@ -49,13 +49,13 @@ def checkForWinner():
         print("\tVictory! The Evil has been defeated!")
         return True
 
-thunder_magic = Magic.Magic("thunder",12,32,"Light")
-ice_magic = Magic.Magic("ice",8,28,"Dark")
-wind_magic = Magic.Magic("wind",10,25,"Light")
-fire_magic = Magic.Magic("fire",10,30,"Dark")
+thunder_magic = Magic.Magic("thunder",12,"Light",32)
+wind_magic = Magic.Magic("wind",10,"Light",25)
+ice_magic = Magic.Magic("ice",8,"Dark",28)
+fire_magic = Magic.Magic("fire",10,"Dark",30)
 magics = [thunder_magic,ice_magic,wind_magic,fire_magic]
-player = Person.Person("Good Ash",100,200,20,magics)
-enemy = Person.Person("EvilDead",100,200,20,magics)
+player = Person.Person("Good Ash",magics,100,200,20)
+enemy = Person.Person("EvilDead",magics,100,200,20)
 
 # INTRODUCTION TO GAME:
 

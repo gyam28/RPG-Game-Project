@@ -1,7 +1,7 @@
 import random
 
 class Person():
-    def __init__ (self,name,hp=200,mp=200,attack=20,magics):
+    def __init__ (self,name,magics,hp=200,mp=200,attack=20):
         self.name = name
         self.hp = hp
         self.max_hp = hp
@@ -39,5 +39,5 @@ class Person():
     def choose_magic(self):
         action = 1
         for element in self.magics:
-            print(f"{action}. {element}")
+            print(f"{action}. {element.name}")
             action = action + 1

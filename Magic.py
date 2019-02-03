@@ -1,6 +1,6 @@
 import random
 class Magic():
-    def __init__ (self,name, mp_cost, dmg=20,type):
+    def __init__ (self,name, mp_cost, type, dmg=20):
         self.name = name
         self.mp_cost = mp_cost
         self.dmg = dmg
