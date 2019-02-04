@@ -18,7 +18,7 @@ class Person():
 
     def generate_dmg(self):
         damage_result = random.randrange(self.atk_low,self.atk_high)
-        return damage_result
+        return damage_result #can be also randint(self.atk_low,self.atk_high
 
     def take_dmg(self, taken_damage):
         self.hp = self.hp - taken_damage
@@ -29,7 +29,7 @@ class Person():
         #actions can be (1)Physical attack, (2)Magic or (3)Self Healing
         action = 1
         for element in self.actions:
-            print(f"{action}. {element}")
+            print(f"\n{action}. {element}")
             action = action + 1
 
     def reduce_mp(self,used_mp):
@@ -39,5 +39,5 @@ class Person():
     def choose_magic(self):
         action = 1
         for element in self.magics:
-            print(f"{action}. {element.name}")
+            print(f"\n{action}. {element.name}")
             action = action + 1
