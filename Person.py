@@ -36,8 +36,16 @@ class Person():
         self.mp = self.mp - used_mp
         return self.mp
 
+    def available_magic(self):
+        options_left = []
+        for magic in self.magics:
+            if self.mp >= magic.mp_cost:
+                options_left.append(magic)
+        return options_left
+
     def choose_magic(self):
         action = 1
-        for element in self.magics:
+        magic_left = self.available_magic()
+        for element in magic_left:
             print(f"\n{action}. {element.name}")
             action = action + 1
