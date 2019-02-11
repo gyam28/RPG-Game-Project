@@ -1,4 +1,5 @@
 import random
+import UIHelper
 
 class Person():
     def __init__ (self,name,magics,hp=200,mp=200,attack=20):
@@ -14,7 +15,10 @@ class Person():
         self.magics = magics
 
     def get_stat(self):
-        print(f"{self.name}:\t{self.hp}/{self.max_hp} HP \n\t\t{self.mp}/{self.max_mp} MP")
+        name = self.name +":\t"
+        health = UIHelper.displayStatusBar(self.hp, self.max_hp, UIHelper.green) + " " + str(self.hp) +"/" + str(self.max_hp) + "HP"
+        mana = UIHelper.displayStatusBar(self.mp, self.max_mp, UIHelper.blue) + " " + str(self.mp) +"/" + str(self.max_mp) + "MP"
+        print(name + health + "\n\t\t" + mana)
 
     def generate_dmg(self):
         damage_result = random.randrange(self.atk_low,self.atk_high)
@@ -28,9 +32,11 @@ class Person():
     def choose_action(self):
         #actions can be (1)Physical attack, (2)Magic or (3)Self Healing
         action = 1
+        actionsString = ""
         for element in self.actions:
-            print(f"\n{action}. {element}")
+            actionsString = actionsString + str(action)+"."+element+"\n"
             action = action + 1
+        return actionsString
 
     def reduce_mp(self,used_mp):
         self.mp = self.mp - used_mp
@@ -45,7 +51,9 @@ class Person():
 
     def choose_magic(self):
         action = 1
+        magicString = ""
         magic_left = self.available_magic()
         for element in magic_left:
-            print(f"\n{action}. {element.name}")
+            magicString = magicString + str(action)+"."+element.name+"\n"
             action = action + 1
+        return magicString

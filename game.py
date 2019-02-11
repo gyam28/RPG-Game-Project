@@ -6,20 +6,30 @@ def calculate_damage(attacker,receiver):
     receiver.take_dmg(damage_given)
     print(f"\n{attacker.name} gave {damage_given} Pts of damage to {receiver.name}! ")
 
+def calculate_magic_damage(magic,attacker,receiver):
+    magic_damage = magic.generate_magic_dmg()
+    leftover_mp = attacker.reduce_mp(magic.mp_cost)
+    receiver.take_dmg(magic_damage)
+    print(f"\n{attacker.name} gave {magic_damage} Pts of damage to {receiver.name}! ")
+    print(f"\n{attacker.name} used {magic.name} magic: {leftover_mp} MP is left.")
+
+def receive_user_input(printingOptions, validationOptions):
+    while True:
+        print("\nSelect one of the following actions:")
+        print(printingOptions)
+        try:
+            action_number = int(input("\n>>>  "))
+            if 1 <= action_number and action_number <= len(validationOptions):
+                return action_number
+        except Exception:
+            print("\nSomething went wrong!Choose an existing number:")
+
+
 #Player attack
 def playerTurn():
     valid_action = False
     while not valid_action:
-        while True:
-            print("\nSelect one of the following actions:")
-            player.choose_action()
-            try:
-                action_number = int(input("\n>>>  "))
-                if 1 <= action_number and action_number <= len(player.actions):
-                    break
-            except Exception:
-                print("\nSomething went wrong!Choose an existing number:")
-
+        action_number = receive_user_input(player.choose_action(),player.actions)
         action = player.actions[action_number-1]
         if action == "Attack":
             print("\nAttacking the enemy!")
@@ -29,20 +39,15 @@ def playerTurn():
             if len(player.available_magic()) == 0:
                 print("\nYou have insufficient MP! From now on you only get to attack!")
             else:
-                player.choose_magic()
-                try:
-                    magic_number = int(input("\n>>>  "))
-                    if 1 <= magic_number and magic_number <= len(player.available_magic()):
-                        magic = player.available_magic()[magic_number-1]
-                        magic_damage = magic.generate_magic_dmg()
-                        leftover_mp = player.reduce_mp(magic.mp_cost)
-                        enemy.take_dmg(magic_damage)
-                        print(f"\n{player.name} gave {magic_damage} Pts of damage to {enemy.name}! ")
-                        print(f"\n{player.name} used {magic.name} magic: {leftover_mp} MP is left.")
-                        valid_action = True
-                except ValueError:
-                    print("\nSomething went wrong! Choose an existing number:")
-
+                magic_number = receive_user_input(player.choose_magic(),player.available_magic())
+                magic = player.available_magic()[magic_number-1]
+                calculate_magic_damage(magic,player,enemy)
+                # magic_damage = magic.generate_magic_dmg()
+                # leftover_mp = player.reduce_mp(magic.mp_cost)
+                # enemy.take_dmg(magic_damage)
+                # print(f"\n{player.name} gave {magic_damage} Pts of damage to {enemy.name}! ")
+                # print(f"\n{player.name} used {magic.name} magic: {leftover_mp} MP is left.")
+                valid_action = True
 
 #Enemy attack
 def enemyTurn():
@@ -62,6 +67,8 @@ def checkForWinner():
     elif enemy.hp <= 0:
         print("\tVictory! The Evil has been defeated!")
         return True
+
+
 #magic types
 thunder_magic = Magic.Magic("thunder",12,"Light",32)
 wind_magic = Magic.Magic("wind",10,"Light",25)
@@ -83,6 +90,8 @@ game_over = False
 
 while not game_over:
     playerTurn()
-    enemyTurn()
-    printGameStatus()
     game_over = checkForWinner()
+    if not game_over:
+        enemyTurn()
+        game_over = checkForWinner()
+    printGameStatus()
