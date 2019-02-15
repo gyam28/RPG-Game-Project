@@ -49,6 +49,14 @@ class Person():
                 options_left.append(magic)
         return options_left
 
+    def get_heal(self, taken_damage):
+        self.hp = self.hp + taken_damage
+        if self.hp > self.max_hp:
+            self.hp = self.max_hp
+        elif self.hp < 0:
+            self.hp = 0
+        return self.hp
+
     def choose_magic(self):
         action = 1
         magicString = ""

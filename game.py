@@ -1,5 +1,6 @@
 import Person
 import Magic
+import Healing
 
 def calculate_damage(attacker,receiver):
     damage_given = attacker.generate_dmg()
@@ -9,8 +10,13 @@ def calculate_damage(attacker,receiver):
 def calculate_magic_damage(magic,attacker,receiver):
     magic_damage = magic.generate_magic_dmg()
     leftover_mp = attacker.reduce_mp(magic.mp_cost)
-    receiver.take_dmg(magic_damage)
-    print(f"\n{attacker.name} gave {magic_damage} Pts of damage to {receiver.name}! ")
+    if magic.type == "Dark":
+        receiver.take_dmg(magic_damage)
+        print(f"\n{attacker.name} gave {magic_damage} Pts of damage to {receiver.name}! ")
+    else:
+        attacker.get_heal(magic_damage)
+        print(f"\n{attacker.name} got healed with {magic_damage} HP! ")
+
     print(f"\n{attacker.name} used {magic.name} magic: {leftover_mp} MP is left.")
 
 def receive_user_input(printingOptions, validationOptions):
@@ -42,12 +48,8 @@ def playerTurn():
                 magic_number = receive_user_input(player.choose_magic(),player.available_magic())
                 magic = player.available_magic()[magic_number-1]
                 calculate_magic_damage(magic,player,enemy)
-                # magic_damage = magic.generate_magic_dmg()
-                # leftover_mp = player.reduce_mp(magic.mp_cost)
-                # enemy.take_dmg(magic_damage)
-                # print(f"\n{player.name} gave {magic_damage} Pts of damage to {enemy.name}! ")
-                # print(f"\n{player.name} used {magic.name} magic: {leftover_mp} MP is left.")
                 valid_action = True
+
 
 #Enemy attack
 def enemyTurn():
@@ -70,13 +72,15 @@ def checkForWinner():
 
 
 #magic types
-thunder_magic = Magic.Magic("thunder",12,"Light",32)
-wind_magic = Magic.Magic("wind",10,"Light",25)
+thunder_magic = Magic.Magic("thunder",12,"Dark",32)
+wind_magic = Magic.Magic("wind",10,"Dark",25)
 ice_magic = Magic.Magic("ice",8,"Dark",28)
 fire_magic = Magic.Magic("fire",10,"Dark",30)
-magics = [thunder_magic,ice_magic,wind_magic,fire_magic]
+cure_magic = Magic.Magic("cure",50,"Light",15)
+recovery_magic = Magic.Magic("recovery",80,"Light",150)
+magics = [thunder_magic,ice_magic,wind_magic,fire_magic,cure_magic,recovery_magic]
 
-player = Person.Person("Good Ash",magics,100,20,20)
+player = Person.Person("Good Ash",magics,100,100,20)
 enemy = Person.Person("EvilDead",magics,100,100,20)
 
 # INTRODUCTION TO GAME:
