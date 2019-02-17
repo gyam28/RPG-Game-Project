@@ -2,17 +2,18 @@ import random
 import UIHelper
 
 class Person():
-    def __init__ (self,name,magics,hp=200,mp=200,attack=20):
+    def __init__ (self,name,magics,items, hp=200,mp=200,attack=20):
         self.name = name
         self.hp = hp
         self.max_hp = hp
         self.mp = mp
         self.max_mp = mp
         self.attack = attack
-        self.actions = ["Attack","Magic","Heal"]
+        self.actions = ["Attack","Magic","Items"]
         self.atk_high = attack + 10
         self.atk_low = attack - 10
         self.magics = magics
+        self.items = items
 
     def get_stat(self):
         name = self.name +":\t"
@@ -43,19 +44,11 @@ class Person():
         return self.mp
 
     def available_magic(self):
-        options_left = []
+        magics_left = []
         for magic in self.magics:
             if self.mp >= magic.mp_cost:
-                options_left.append(magic)
-        return options_left
-
-    def get_heal(self, taken_damage):
-        self.hp = self.hp + taken_damage
-        if self.hp > self.max_hp:
-            self.hp = self.max_hp
-        elif self.hp < 0:
-            self.hp = 0
-        return self.hp
+                magics_left.append(magic)
+        return magics_left
 
     def choose_magic(self):
         action = 1
@@ -65,3 +58,39 @@ class Person():
             magicString = magicString + str(action)+"."+element.name+"\n"
             action = action + 1
         return magicString
+
+    def choose_item(self):
+        item = 1
+        itemString = ""
+        for element in self.available_items():
+            itemString = itemString + str(item)+"."+element.name+" -> "+ str(element.quantity)+" left\n"
+            item = item + 1
+        return itemString
+
+    def updateItems(self,leftover_qty,item_name):
+        for element in self.items:
+            if item_name == element.name:
+                element.quantity = leftover_qty
+
+    def available_items(self):
+        items_left=[]
+        for item in self.items:
+            if item.quantity != 0:
+                items_left.append(item)
+        return items_left
+
+    def get_heal(self, taken_damage):
+        self.hp = self.hp + taken_damage
+        if self.hp > self.max_hp:
+            self.hp = self.max_hp
+        elif self.hp < 0:
+            self.hp = 0
+        return self.hp
+
+    def get_mana(self, mana):
+        self.mp = self.mp + mana
+        if self.mp > self.max_mp:
+            self.mp = self.max_mp
+        elif self.mp < 0:
+            self.mp = 0
+        return self.mp
